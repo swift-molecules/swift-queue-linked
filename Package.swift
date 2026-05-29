@@ -19,10 +19,10 @@ let package = Package(
         .library(name: "Queue Linked Primitives Test Support", targets: ["Queue Linked Primitives Test Support"]),
     ],
     dependencies: [
-        .package(path: "../swift-queue-primitives"),
-        .package(path: "../swift-buffer-linked-primitives"),
-        .package(path: "../swift-list-linked-primitives"),
-        .package(path: "../swift-index-primitives"),
+        .package(url: "https://github.com/swift-primitives/swift-queue-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-buffer-linked-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-list-linked-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-index-primitives.git", branch: "main"),
     ],
     targets: [
 
