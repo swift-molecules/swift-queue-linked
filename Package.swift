@@ -23,10 +23,12 @@ let package = Package(
         .package(url: "https://github.com/swift-primitives/swift-buffer-linked-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-list-linked-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-index-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-iterator-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-sequence-primitives.git", branch: "main"),
     ],
     targets: [
 
-        // MARK: - Type module — lean ~Copyable Queue.Linked + nested variants/errors ([MOD-036])
+        // MARK: - Type module — lean ~Copyable Queue.Linked + nested variants/errors + iteration witnesses ([MOD-036])
         .target(
             name: "Queue Linked Primitive",
             dependencies: [
@@ -35,6 +37,10 @@ let package = Package(
                 .product(name: "Buffer Linked Primitives", package: "swift-buffer-linked-primitives"),
                 .product(name: "List Linked Primitives", package: "swift-list-linked-primitives"),
                 .product(name: "Index Primitives", package: "swift-index-primitives"),
+                .product(name: "Iterator Primitive", package: "swift-iterator-primitives"),
+                .product(name: "Iterator Protocol", package: "swift-iterator-primitives"),
+                .product(name: "Iterable", package: "swift-iterator-primitives"),
+                .product(name: "Iterator Chunk Primitives", package: "swift-iterator-primitives"),
             ]
         ),
 
@@ -47,6 +53,11 @@ let package = Package(
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
                 .product(name: "Buffer Linked Primitives", package: "swift-buffer-linked-primitives"),
                 .product(name: "List Linked Primitives", package: "swift-list-linked-primitives"),
+                .product(name: "Iterator Primitive", package: "swift-iterator-primitives"),
+                .product(name: "Iterator Protocol", package: "swift-iterator-primitives"),
+                .product(name: "Iterable", package: "swift-iterator-primitives"),
+                .product(name: "Iterator Chunk Primitives", package: "swift-iterator-primitives"),
+                .product(name: "Sequence Primitives", package: "swift-sequence-primitives"),
             ]
         ),
 

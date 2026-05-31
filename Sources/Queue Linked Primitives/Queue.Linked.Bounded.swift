@@ -164,44 +164,11 @@ extension Queue.Linked.Fixed where Element: ~Copyable {
     }
 }
 
-// MARK: - Sequence (Copyable elements only)
-
-/// `Queue.Linked.Fixed` conforms to `Sequence` when `Element` is `Copyable`.
-///
-/// This enables `for-in` loops, `map`, `filter`, and other sequence operations.
-/// For `~Copyable` elements, use ``forEach(_:)`` instead.
-extension Queue.Linked.Fixed: Swift.Sequence where Element: Copyable {
-
-    /// An iterator over the elements of a bounded linked queue.
-    public struct Iterator: Sequence.Iterator.`Protocol`, IteratorProtocol {
-        @usableFromInline
-        var _inner: Buffer<Element>.Linked<1>.Iterator
-
-        @usableFromInline
-        init(inner: Buffer<Element>.Linked<1>.Iterator) {
-            self._inner = inner
-        }
-
-        @_lifetime(&self)
-        @inlinable
-        public mutating func nextSpan(maximumCount: Cardinal) -> Span<Element> {
-            _inner.nextSpan(maximumCount: maximumCount)
-        }
-
-        @inlinable
-        public mutating func next() -> Element? {
-            _inner.next()
-        }
-    }
-
-    /// Returns an iterator over the elements of the queue.
-    ///
-    /// Elements are yielded from front (oldest) to back (newest).
-    @inlinable
-    public func makeIterator() -> Iterator {
-        Iterator(inner: _buffer.makeIterator())
-    }
-}
+// Note: iteration is via the institute `Iterable` + `Sequenceable` attachables (see the
+// type module's Queue.Linked.Fixed+Iterable.swift / +Sequenceable.swift and the shared scalar
+// node-walk `Queue.Linked.Iterator`). The per-type `Swift.Sequence` conformance is dropped to
+// match the exemplar — the deferred stdlib-interop axis (one generic `Swift.Sequence` bridge,
+// vended once).
 
 // MARK: - Equatable
 

@@ -92,19 +92,10 @@ extension Queue.Linked.Inline where Element: Copyable {
     }
 }
 
-// MARK: - Queue.Linked.Inline ForEach
-
-extension Queue.Linked.Inline where Element: Copyable {
-    /// Calls the given closure for each element in the queue.
-    ///
-    /// Elements are visited from front (oldest) to back (newest).
-    ///
-    /// - Parameter body: A closure that receives each element.
-    /// - Complexity: O(n) where n is the number of elements.
-    public func forEach(_ body: (Element) -> Void) {
-        _storage.forEach(body)
-    }
-}
+// Note: the per-type Copyable-convenience `forEach(_ body: (Element) -> Void)` is removed; the
+// `Iterable` floor (Queue.Linked.Inline+Iterable.swift, via the snapshot scalar iterator)
+// provides `forEach`. `Queue.Linked.Inline` is unconditionally `~Copyable` with no `~Copyable`-
+// element support, so no per-type `~Copyable` `forEach` is retained here.
 
 // MARK: - Queue.Linked.Inline Sendable
 
@@ -181,19 +172,10 @@ extension Queue.Linked.Small where Element: Copyable {
     }
 }
 
-// MARK: - Queue.Linked.Small ForEach
-
-extension Queue.Linked.Small where Element: Copyable {
-    /// Calls the given closure for each element in the queue.
-    ///
-    /// Elements are visited from front (oldest) to back (newest).
-    ///
-    /// - Parameter body: A closure that receives each element.
-    /// - Complexity: O(n) where n is the number of elements.
-    public func forEach(_ body: (Element) -> Void) {
-        _storage.forEach(body)
-    }
-}
+// Note: the per-type Copyable-convenience `forEach(_ body: (Element) -> Void)` is removed; the
+// `Iterable` floor (Queue.Linked.Small+Iterable.swift, via the snapshot scalar iterator)
+// provides `forEach`. `Queue.Linked.Small` is unconditionally `~Copyable` with no `~Copyable`-
+// element support, so no per-type `~Copyable` `forEach` is retained here.
 
 // MARK: - Queue.Linked.Small Sendable
 
