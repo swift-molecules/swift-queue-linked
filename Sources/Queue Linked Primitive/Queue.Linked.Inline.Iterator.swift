@@ -9,7 +9,7 @@
 //
 // ===----------------------------------------------------------------------===//
 
-public import Queue_Primitives_Core
+public import Queue_Primitives
 public import List_Linked_Primitives
 public import Iterator_Primitive
 public import Iterator_Protocol

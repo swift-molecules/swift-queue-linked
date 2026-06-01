@@ -10,7 +10,7 @@
 // ===----------------------------------------------------------------------===//
 
 public import Queue_Linked_Primitive
-public import Queue_Primitives_Core
+public import Queue_Primitives
 
 extension Queue.Linked.Small where Element: Copyable {
     /// Constructs a SmallVec linked-FIFO queue from a result-builder closure.

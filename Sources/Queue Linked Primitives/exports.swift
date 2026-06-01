@@ -4,4 +4,4 @@
 // namespace owner, so `import Queue_Linked_Primitives` surfaces the whole package.
 
 @_exported public import Queue_Linked_Primitive
-@_exported public import Queue_Primitives_Core
+@_exported public import Queue_Primitives

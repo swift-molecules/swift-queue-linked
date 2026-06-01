@@ -9,7 +9,7 @@
 //
 // ===----------------------------------------------------------------------===//
 
-public import Queue_Primitives_Core
+public import Queue_Primitives
 
 extension Queue.Linked.Small where Element: Copyable {
     /// Errors that can occur during small linked queue operations.

@@ -32,7 +32,7 @@ let package = Package(
         .target(
             name: "Queue Linked Primitive",
             dependencies: [
-                .product(name: "Queue Primitives Core", package: "swift-queue-primitives"),
+                .product(name: "Queue Primitives", package: "swift-queue-primitives"),
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
                 .product(name: "Buffer Linked Primitives", package: "swift-buffer-linked-primitives"),
                 .product(name: "List Linked Primitives", package: "swift-list-linked-primitives"),
@@ -49,7 +49,7 @@ let package = Package(
             name: "Queue Linked Primitives",
             dependencies: [
                 "Queue Linked Primitive",
-                .product(name: "Queue Primitives Core", package: "swift-queue-primitives"),
+                .product(name: "Queue Primitives", package: "swift-queue-primitives"),
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
                 .product(name: "Buffer Linked Primitives", package: "swift-buffer-linked-primitives"),
                 .product(name: "List Linked Primitives", package: "swift-list-linked-primitives"),

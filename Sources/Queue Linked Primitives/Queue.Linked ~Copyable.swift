@@ -11,7 +11,7 @@
 
 public import Buffer_Linked_Primitives
 public import Queue_Linked_Primitive
-public import Queue_Primitives_Core
+public import Queue_Primitives
 
 // MARK: - Properties
 

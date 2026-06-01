@@ -10,7 +10,7 @@
 // ===----------------------------------------------------------------------===//
 
 public import Queue_Linked_Primitive
-public import Queue_Primitives_Core
+public import Queue_Primitives
 
 extension Queue.Linked where Element: ~Copyable {
     /// A result builder for declaratively constructing linked queues.
