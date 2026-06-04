@@ -43,10 +43,10 @@ extension Queue.Linked where Element: Copyable {
     /// consuming `Sequenceable` face vends directly.
     public struct Iterator: Iterator_Primitive.Iterator.`Protocol`, IteratorProtocol {
         @usableFromInline
-        package var _inner: Buffer<Element>.Linked<1>.Iterator
+        package var _inner: Buffer<Storage<Element>.Heap>.Linked<1>.Iterator
 
         @inlinable
-        package init(inner: Buffer<Element>.Linked<1>.Iterator) {
+        package init(inner: Buffer<Storage<Element>.Heap>.Linked<1>.Iterator) {
             self._inner = inner
         }
 

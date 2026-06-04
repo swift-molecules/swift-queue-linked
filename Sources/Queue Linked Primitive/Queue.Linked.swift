@@ -53,7 +53,7 @@ extension Queue where Element: ~Copyable {
     public struct Linked: ~Copyable {
 
         @usableFromInline
-        package var _buffer: Buffer<Element>.Linked<1>
+        package var _buffer: Buffer<Storage<Element>.Heap>.Linked<1>
 
         /// Creates an empty linked queue.
         @inlinable
@@ -95,7 +95,7 @@ extension Queue where Element: ~Copyable {
         @safe
         public struct Fixed: ~Copyable {
             @usableFromInline
-            package var _buffer: Buffer<Element>.Linked<1>
+            package var _buffer: Buffer<Storage<Element>.Heap>.Linked<1>
 
             /// The maximum number of elements the queue can hold.
             public let capacity: Index_Primitives.Index<Element>.Count
