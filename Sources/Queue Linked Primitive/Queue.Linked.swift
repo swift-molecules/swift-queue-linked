@@ -10,6 +10,8 @@
 // ===----------------------------------------------------------------------===//
 
 public import Buffer_Linked_Primitive
+public import Memory_Heap_Primitives
+public import Storage_Contiguous_Primitives
 public import Buffer_Linked_Primitives
 public import Index_Primitives
 public import Queue_Primitives
@@ -53,7 +55,7 @@ extension Queue where Element: ~Copyable {
     public struct Linked: ~Copyable {
 
         @usableFromInline
-        package var _buffer: Buffer<Storage<Element>.Heap>.Linked<1>
+        package var _buffer: Buffer<Storage<Element>.Contiguous<Memory.Heap<Element>>>.Linked<1>
 
         /// Creates an empty linked queue.
         @inlinable
@@ -95,7 +97,7 @@ extension Queue where Element: ~Copyable {
         @safe
         public struct Fixed: ~Copyable {
             @usableFromInline
-            package var _buffer: Buffer<Storage<Element>.Heap>.Linked<1>
+            package var _buffer: Buffer<Storage<Element>.Contiguous<Memory.Heap<Element>>>.Linked<1>
 
             /// The maximum number of elements the queue can hold.
             public let capacity: Index_Primitives.Index<Element>.Count
