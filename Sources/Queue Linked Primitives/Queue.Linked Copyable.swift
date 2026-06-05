@@ -80,13 +80,11 @@ extension Queue.Linked {
 // the deferred stdlib-interop axis (one generic `Swift.Sequence` bridge, vended once).
 
 // ============================================================================
-// MARK: - Sequence.Clearable Conformance
+// MARK: - removeAll()
 // ============================================================================
 
-extension Queue.Linked: Sequence.Clearable where Element: Copyable {
+extension Queue.Linked where Element: Copyable {
     /// Removes all elements from the queue.
-    ///
-    /// This enables `.forEach.consuming { }` pattern via `Property.Inout` extension.
     @inlinable
     public mutating func removeAll() {
         clear(keepingCapacity: false)
