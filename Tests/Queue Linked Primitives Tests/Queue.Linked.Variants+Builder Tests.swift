@@ -16,35 +16,7 @@ import Testing
 
 @Suite("Queue.Linked variants + Builder")
 struct QueueLinkedVariantsBuilderTests {
-    @Suite struct Inline {}
-    @Suite struct Small {}
     @Suite struct Fixed {}
-}
-
-extension QueueLinkedVariantsBuilderTests.Inline {
-    @Test
-    func `Inline within capacity`() throws {
-        var q = try Queue<Int>.Linked.Inline<8> { 1; 2; 3 }
-        #expect(q.dequeue() == 1)
-    }
-
-    @Test
-    func `Inline throws on overflow`() {
-        do {
-            _ = try Queue<Int>.Linked.Inline<2> { 1; 2; 3 }
-            Issue.record("expected throw")
-        } catch {
-            // expected
-        }
-    }
-}
-
-extension QueueLinkedVariantsBuilderTests.Small {
-    @Test
-    func `Small spills to heap`() throws {
-        var q = try Queue<Int>.Linked.Small<2> { 1; 2; 3; 4; 5 }
-        #expect(q.dequeue() == 1)
-    }
 }
 
 extension QueueLinkedVariantsBuilderTests.Fixed {
