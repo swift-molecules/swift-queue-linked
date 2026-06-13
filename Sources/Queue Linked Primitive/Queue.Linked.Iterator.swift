@@ -33,8 +33,8 @@ public import Iterator_Protocol
 // a thin wrapper over the buffer's own node-walk cursor.
 //
 // In the type module per [MOD-036]: the `init(inner:)` captures the buffer's iterator state.
-// One scalar `Iterator` serves both `Queue.Linked` and `Queue.Linked.Fixed` (both backed by
-// `Buffer.Linked<1>`).
+// The scalar `Iterator` serves `Queue.Linked` (backed by `Buffer.Linked<1>`; the former
+// `Queue.Linked.Fixed` half is dissolved — Round M coda).
 
 extension Queue.Linked where Element: Copyable {
     /// A single-pass scalar iterator over the queue's elements, front (oldest) to back (newest).
