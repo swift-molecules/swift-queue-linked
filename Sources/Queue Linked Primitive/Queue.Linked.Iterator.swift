@@ -21,11 +21,11 @@ public import Iterator_Protocol
 //
 // `Queue.Linked` is pointer-chained (Buffer.Linked-backed node pool): it has NO contiguous
 // element span, so — unlike the contiguous single-element containers (set-ordered / stack /
-// heap) which vend `Iterator.Chunk` over a `Memory.Contiguous.Protocol` span — the queue
+// heap) which vend `Iterator.Chunk` over a `Span.Protocol` span — the queue
 // produces its bulk iterator by wrapping this hand-written scalar node-walk in
 // `Iterator.Materializing`, the span-primitive adapter for generator-style sequences (the
 // same shape `Single` / dict-ordered / list-linked use). The queue therefore does NOT conform
-// `Memory.Contiguous.Protocol` (no element span exists).
+// `Span.Protocol` (no element span exists).
 //
 // The scalar walk is IRREDUCIBLE — it follows the link chain through the backing
 // `Buffer.Linked` pool — and is NOT deduplicated via any `memory-sequence` bridge or generic
