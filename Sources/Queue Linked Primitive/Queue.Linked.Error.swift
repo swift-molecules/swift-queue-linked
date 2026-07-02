@@ -11,7 +11,7 @@
 
 public import Queue_Primitives
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// Errors that can occur during linked queue operations.
     ///
     /// ## Cases

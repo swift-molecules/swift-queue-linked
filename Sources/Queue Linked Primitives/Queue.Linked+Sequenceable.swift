@@ -28,7 +28,7 @@ public import Sequence_Primitives
 // per-type `Swift.Sequence` conformance is a deliberate consumer-facing removal to match the
 // exemplar.
 
-extension Queue.Linked: Sequenceable where Element: Copyable {
+extension __QueueLinked: Sequenceable where Element: Copyable {
     @_implements(Sequenceable, Iterator)
     public typealias SequenceableIterator = Iterator
 

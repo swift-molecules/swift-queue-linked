@@ -35,6 +35,7 @@ let package = Package(
         .target(
             name: "Queue Linked Primitive",
             dependencies: [
+                .product(name: "Queue Primitive", package: "swift-queue-primitives"),
                 .product(name: "Queue Primitives", package: "swift-queue-primitives"),
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
                 .product(name: "Buffer Linked Primitives", package: "swift-buffer-linked-primitives"),
@@ -45,6 +46,7 @@ let package = Package(
                 .product(name: "Iterable", package: "swift-iterator-primitives"),
                 .product(name: "Iterator Chunk Primitives", package: "swift-iterator-primitives"),
                 .product(name: "Storage Contiguous Primitives", package: "swift-storage-primitives"),
+                .product(name: "Store Protocol Primitives", package: "swift-storage-primitives"),
                 .product(name: "Memory Heap Primitives", package: "swift-memory-heap-primitives"),
             ]
         ),

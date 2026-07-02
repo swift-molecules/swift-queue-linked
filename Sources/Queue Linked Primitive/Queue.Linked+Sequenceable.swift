@@ -20,7 +20,7 @@ public import Buffer_Linked_Primitives
 // Queue.Linked+Sequenceable.swift). A public member in the type module per [MOD-036]
 // refined-C: it copies the backing buffer's iterator state out of the consumed queue.
 
-extension Queue.Linked where Element: Copyable {
+extension __QueueLinked where Element: Copyable {
 
     /// A single-pass consuming iterator over the queue's elements, front to back.
     /// Witness for `Sequenceable`.

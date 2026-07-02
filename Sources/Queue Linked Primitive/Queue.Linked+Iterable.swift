@@ -32,7 +32,7 @@ public import Iterator_Chunk_Primitives
 //
 // The borrowing `makeIterator()` is a public member in the type module per [MOD-036].
 
-extension Queue.Linked: Iterable where Element: Copyable {
+extension __QueueLinked: Iterable where Element: Copyable {
     @_implements(Iterable, Iterator)
     public typealias IterableIterator = Iterator_Primitive.Iterator.Materializing<Iterator>
 

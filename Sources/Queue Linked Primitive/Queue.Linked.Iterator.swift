@@ -36,7 +36,7 @@ public import Iterator_Protocol
 // The scalar `Iterator` serves `Queue.Linked` (backed by `Buffer.Linked<1>`; the former
 // `Queue.Linked.Fixed` half is dissolved — Round M coda).
 
-extension Queue.Linked where Element: Copyable {
+extension __QueueLinked where Element: Copyable {
     /// A single-pass scalar iterator over the queue's elements, front (oldest) to back (newest).
     ///
     /// Walks the backing `Buffer.Linked` node link chain. This is the scalar

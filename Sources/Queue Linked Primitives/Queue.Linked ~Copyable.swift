@@ -15,7 +15,7 @@ public import Queue_Primitives
 
 // MARK: - Properties
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// The current number of elements in the queue.
     @inlinable
     public var count: Index<Element>.Count { _buffer.count }
@@ -31,7 +31,7 @@ extension Queue.Linked where Element: ~Copyable {
 
 // MARK: - Capacity Management
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// Ensures the queue has capacity for one additional element.
     @usableFromInline
     mutating func _ensureCapacityForOneMore() {
@@ -52,7 +52,7 @@ extension Queue.Linked where Element: ~Copyable {
 
 // MARK: - Core Operations (~Copyable)
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// Enqueues an element at the back of the queue.
     ///
     /// - Parameter element: The element to enqueue.
@@ -89,7 +89,7 @@ extension Queue.Linked where Element: ~Copyable {
 
 // MARK: - Peek
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// Peeks at the front element without removing it.
     ///
     /// Uses a closure to support `~Copyable` elements via borrowing.
@@ -105,7 +105,7 @@ extension Queue.Linked where Element: ~Copyable {
 
 // MARK: - ForEach
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// Calls the given closure for each element in the queue.
     ///
     /// Elements are visited from front (oldest) to back (newest).

@@ -16,7 +16,7 @@ public import Queue_Primitives
 
 // MARK: - Copy-on-Write (Copyable elements only)
 
-extension Queue.Linked where Element: Copyable {
+extension __QueueLinked where Element: Copyable {
     /// Ensures the storage is uniquely referenced before mutation.
     @usableFromInline
     mutating func _makeUnique() {
@@ -60,7 +60,7 @@ extension Queue.Linked where Element: Copyable {
     }
 }
 
-extension Queue.Linked {
+extension __QueueLinked {
     /// Returns the front element without removing it, or nil if empty.
     ///
     /// This is a convenience method for `Copyable` elements. For `~Copyable`
@@ -83,7 +83,7 @@ extension Queue.Linked {
 // MARK: - removeAll()
 // ============================================================================
 
-extension Queue.Linked where Element: Copyable {
+extension __QueueLinked where Element: Copyable {
     /// Removes all elements from the queue.
     @inlinable
     public mutating func removeAll() {
@@ -95,7 +95,7 @@ extension Queue.Linked where Element: Copyable {
 // MARK: - Sequence.Drain.Protocol Conformance
 // ============================================================================
 
-extension Queue.Linked: Sequence.Drain.`Protocol` where Element: Copyable {
+extension __QueueLinked: Sequence.Drain.`Protocol` where Element: Copyable {
     /// Drains all elements in FIFO order, passing each to the closure with ownership.
     ///
     /// After this method returns, the queue is empty but still usable.
@@ -113,7 +113,7 @@ extension Queue.Linked: Sequence.Drain.`Protocol` where Element: Copyable {
 
 // MARK: - Conditional Drain
 
-extension Queue.Linked where Element: Copyable {
+extension __QueueLinked where Element: Copyable {
     /// Drains elements in FIFO order while the predicate returns true.
     @inlinable
     public mutating func drain(
@@ -131,7 +131,7 @@ extension Queue.Linked where Element: Copyable {
 // MARK: - Drain Property Accessor
 // ============================================================================
 
-extension Queue.Linked where Element: Copyable {
+extension __QueueLinked where Element: Copyable {
     /// Accessor for drain operations.
     public var drain: Property<Sequence.Drain, Self>.Inout {
         mutating _read {
@@ -146,7 +146,7 @@ extension Queue.Linked where Element: Copyable {
 
 // MARK: - Equatable
 
-extension Queue.Linked: Equatable where Element: Equatable {
+extension __QueueLinked: Equatable where Element: Equatable {
     @inlinable
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs._buffer == rhs._buffer
@@ -155,7 +155,7 @@ extension Queue.Linked: Equatable where Element: Equatable {
 
 // MARK: - Hashable
 
-extension Queue.Linked: Hashable where Element: Hashable {
+extension __QueueLinked: Hashable where Element: Hashable {
     @inlinable
     public func hash(into hasher: inout Hasher) {
         _buffer.hash(into: &hasher)
@@ -164,4 +164,4 @@ extension Queue.Linked: Hashable where Element: Hashable {
 
 // MARK: - Sendable
 
-extension Queue.Linked: @unchecked Sendable where Element: Sendable {}
+extension __QueueLinked: @unchecked Sendable where Element: Sendable {}

@@ -12,7 +12,7 @@
 public import Queue_Linked_Primitive
 public import Queue_Primitives
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// A result builder for declaratively constructing linked queues.
     ///
     /// **FIFO semantics.** Declaration order is enqueue order, which is
@@ -149,7 +149,7 @@ extension Queue.Linked where Element: ~Copyable {
 
 // MARK: - Convenience Init
 
-extension Queue.Linked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable {
     /// Constructs a linked queue from a result-builder closure.
     ///
     /// FIFO: declaration order = enqueue order = dequeue order.
@@ -161,7 +161,7 @@ extension Queue.Linked where Element: ~Copyable {
 
 // MARK: - Sequence Bulk-Add (Copyable Element only)
 
-extension Queue.Linked.Builder where Element: Copyable {
+extension __QueueLinked.Builder where Element: Copyable {
     /// Bulk-enqueue a Swift.Sequence without per-iteration allocation.
     /// FIFO: iteration order = enqueue order.
     @inlinable
