@@ -9,6 +9,7 @@
 //
 // ===----------------------------------------------------------------------===//
 
+public import Buffer_Linked_Primitive
 public import Queue_Primitive
 public import Store_Protocol_Primitives
 
@@ -16,15 +17,21 @@ public import Store_Protocol_Primitives
 
 extension __Queue where S: Store.`Protocol` & ~Copyable {
 
-    /// An arena-backed linked FIFO queue keyed on the family's element.
+    /// An arena-backed singly-linked FIFO queue over the default move-only column.
     ///
-    /// This is a **nest alias** (D4.1 sense (b), [DS-028]): it merely NAMES the
-    /// `__QueueLinked` sibling carrier under the `Queue` family namespace, so
-    /// consumers spell `Queue<Element>.Linked`. The linked queue is a distinct
-    /// discipline sibling ([DS-027].2, its own package/carrier — O(1) middle-removal
-    /// is a contract difference), not a variant of `__Queue`; only its nest alias
-    /// lives here. This W1 alias is UNBREAK-ONLY; the carrier's full column-generic
-    /// disposition (`__QueueLinked<S>` over Linked columns + a `.Bounded` alias) is
-    /// wave W2.
-    public typealias Linked = __QueueLinked<S.Element>
+    /// This is a **nest alias** (D4.1 sense (b), [DS-028]): it NAMES the hoisted `__QueueLinked`
+    /// sibling carrier under the `Queue` family namespace, so consumers spell
+    /// `Queue<Element>.Linked`. The linked queue is a distinct discipline sibling ([DS-027].2, its
+    /// own package/carrier — O(1) middle-removal is a contract difference, D4.1), not a variant of
+    /// `__Queue`; only its nest alias lives here.
+    ///
+    /// The default column is the **zero-cost move-only** generational store — mirroring the ring
+    /// `Queue<E>` (move-only default) and `List<E>.Singly`. The value-semantic (CoW) `Shared`
+    /// column is deferred to consumer-pull (none exist today), exactly as the ring queue's
+    /// `Shared` variant is. The fixed-capacity `.Bounded` alias is **W3-blocked**: the generational
+    /// seam vends neither `Store.Direct` nor a `Bounded` capacity-twin (W1.5 conformed
+    /// `Buffer.Linear` + `Buffer.Ring` only; linked op generalization is wave W3). The `Fixed` hand
+    /// variant was deleted in the Round M coda, so no residual bounded surface remains to keep.
+    public typealias Linked =
+        __QueueLinked<S.Element, Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Node<S.Element, 1>>>
 }

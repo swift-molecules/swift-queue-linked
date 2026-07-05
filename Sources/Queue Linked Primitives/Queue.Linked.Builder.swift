@@ -9,10 +9,11 @@
 //
 // ===----------------------------------------------------------------------===//
 
+public import Buffer_Linked_Primitive
+public import Buffer_Ring_Primitive
 public import Queue_Linked_Primitive
-public import Queue_Primitives
 
-extension __QueueLinked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
     /// A result builder for declaratively constructing linked queues.
     ///
     /// **FIFO semantics.** Declaration order is enqueue order, which is
@@ -29,7 +30,8 @@ extension __QueueLinked where Element: ~Copyable {
     /// queue.dequeue()  // 3 — last enqueued
     /// ```
     ///
-    /// Supports `~Copyable` elements via consuming enqueue.
+    /// Supports `~Copyable` elements via consuming enqueue. The builder always produces the
+    /// default move-only front-door column `Queue<Element>.Linked`.
     ///
     /// ## `for` Loops Not Supported
     ///
@@ -147,26 +149,27 @@ extension __QueueLinked where Element: ~Copyable {
     }
 }
 
-// MARK: - Convenience Init
+// MARK: - Convenience Init (column-pinned to the front-door move-only column)
 
-extension __QueueLinked where Element: ~Copyable {
+extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
     /// Constructs a linked queue from a result-builder closure.
     ///
     /// FIFO: declaration order = enqueue order = dequeue order.
     @inlinable
-    public init(@Queue<Element>.Linked.Builder _ builder: () -> Self) {
+    public init(@Queue<Element>.Linked.Builder _ builder: () -> Queue<Element>.Linked)
+    where S == Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Node<Element, 1>> {
         self = builder()
     }
 }
 
 // MARK: - Sequence Bulk-Add (Copyable Element only)
 
-extension __QueueLinked.Builder where Element: Copyable {
-    /// Bulk-enqueue a Swift.Sequence without per-iteration allocation.
+extension __QueueLinked.Builder where Element: Copyable, S: ~Copyable {
+    /// Bulk-enqueue a `Swift.Sequence` without per-iteration allocation.
     /// FIFO: iteration order = enqueue order.
     @inlinable
-    public static func buildExpression<S: Swift.Sequence>(_ expression: S) -> Queue<Element>.Linked
-    where S.Element == Element {
+    public static func buildExpression<Seq: Swift.Sequence>(_ expression: Seq) -> Queue<Element>.Linked
+    where Seq.Element == Element {
         var result = Queue<Element>.Linked()
         for value in expression {
             result.enqueue(value)

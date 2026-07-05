@@ -10,158 +10,49 @@
 // ===----------------------------------------------------------------------===//
 
 public import Buffer_Linked_Primitive
-public import Buffer_Linked_Primitives
 public import Queue_Linked_Primitive
-public import Queue_Primitives
 
-// MARK: - Copy-on-Write (Copyable elements only)
+// MARK: - Copyable-element conveniences (peek-by-value, drain, snapshot iteration)
+//
+// These require a `Copyable` ELEMENT (not a `Copyable` column): they lift boundary elements out by
+// value through the buffer's safe peek/snapshot surface. Value-semantic conformances (Equatable /
+// Hashable / Swift.Sequence) require a `Copyable` COLUMN (the CoW `Shared` box) — deferred to the
+// consumer-pull that surfaces the value-semantic front door, exactly as the ring queue's `Shared`
+// value surface is.
 
-extension __QueueLinked where Element: Copyable {
-    /// Ensures the storage is uniquely referenced before mutation.
-    @usableFromInline
-    mutating func _makeUnique() {
-        _buffer.ensureUnique()
-    }
-
-    /// Enqueues an element at the back of the queue (CoW-aware).
+extension __QueueLinked where Element: Copyable, S: ~Copyable, S: Store.Generational.`Protocol`, S.Element == Node<Element, 1> {
+    /// Returns the front element without removing it, or `nil` if the queue is empty.
     ///
-    /// - Parameter element: The element to enqueue.
-    /// - Complexity: O(1) amortized, O(n) if copy triggered
-    @inlinable
-    public mutating func enqueue(_ element: Element) {
-        _makeUnique()
-        _ensureCapacityForOneMore()
-        _buffer.insert.back(element)
-    }
-
-    /// Dequeues and returns the front element, or nil if empty (CoW-aware).
-    ///
-    /// - Returns: The front element, or `nil` if the queue is empty.
-    /// - Complexity: O(1), O(n) if copy triggered
-    @inlinable
-    public mutating func dequeue() -> Element? {
-        _makeUnique()
-        return _buffer.remove.front()
-    }
-
-    /// Removes all elements from the queue (CoW-aware).
-    ///
-    /// - Parameter keepingCapacity: If `true`, the queue keeps its current capacity.
-    ///   If `false`, the storage is released. Default is `true`.
-    /// - Complexity: O(n) where n is the number of elements.
-    // on removeAll() + conditional buffer reassignment in deep @inlinable chain.
-    @inlinable
-    public mutating func clear(keepingCapacity: Bool = true) {
-        _makeUnique()
-        _buffer.removeAll()
-        if !keepingCapacity {
-            self._buffer = try! .create(capacity: 4)
-        }
-    }
-}
-
-extension __QueueLinked {
-    /// Returns the front element without removing it, or nil if empty.
-    ///
-    /// This is a convenience method for `Copyable` elements. For `~Copyable`
-    /// elements, use ``peek(_:)`` with a closure.
+    /// This is a convenience for `Copyable` elements. For `~Copyable` elements use ``peek(_:)``
+    /// with a borrowing closure.
     ///
     /// - Returns: A copy of the front element, or `nil` if the queue is empty.
-    /// - Complexity: O(1)
+    /// - Complexity: O(1).
     @inlinable
-    public func peek() -> Element? {
-        _buffer.first
-    }
-}
+    public func peek() -> Element? { _buffer.first() }
 
-// Note: iteration is via the institute `Iterable` + `Sequenceable` attachables (see the
-// type module's Queue.Linked+Iterable.swift / +Sequenceable.swift and the scalar node-walk
-// `Iterator`). The per-type `Swift.Sequence` conformance is dropped to match the exemplar —
-// the deferred stdlib-interop axis (one generic `Swift.Sequence` bridge, vended once).
-
-// ============================================================================
-// MARK: - removeAll()
-// ============================================================================
-
-extension __QueueLinked where Element: Copyable {
-    /// Removes all elements from the queue.
-    @inlinable
-    public mutating func removeAll() {
-        clear(keepingCapacity: false)
-    }
-}
-
-// ============================================================================
-// MARK: - Sequence.Drain.Protocol Conformance
-// ============================================================================
-
-extension __QueueLinked: Sequence.Drain.`Protocol` where Element: Copyable {
-    /// Drains all elements in FIFO order, passing each to the closure with ownership.
+    /// Drains elements front-to-back while `predicate` holds, passing each to `body` with ownership.
     ///
-    /// After this method returns, the queue is empty but still usable.
-    ///
-    /// - Parameter body: A closure that receives each drained element with ownership.
-    /// - Complexity: O(n) where n is the number of elements.
-    @inlinable
-    public mutating func drain(_ body: (consuming Element) -> Void) {
-        _makeUnique()
-        while let element = dequeue() {
-            body(element)
-        }
-    }
-}
-
-// MARK: - Conditional Drain
-
-extension __QueueLinked where Element: Copyable {
-    /// Drains elements in FIFO order while the predicate returns true.
+    /// - Complexity: O(k) where k is the number of drained elements.
     @inlinable
     public mutating func drain(
         while predicate: (borrowing Element) -> Bool,
         _ body: (consuming Element) -> Void
     ) {
-        _makeUnique()
-        while let element = peek(), predicate(element) {
-            body(dequeue()!)
+        while let front = peek(), predicate(front) {
+            guard let next = dequeue() else { break }
+            body(next)
         }
     }
-}
 
-// ============================================================================
-// MARK: - Drain Property Accessor
-// ============================================================================
-
-extension __QueueLinked where Element: Copyable {
-    /// Accessor for drain operations.
-    public var drain: Property<Sequence.Drain, Self>.Inout {
-        mutating _read {
-            yield Property<Sequence.Drain, Self>.Inout(&self)
-        }
-        mutating _modify {
-            var accessor = Property<Sequence.Drain, Self>.Inout(&self)
-            yield &accessor
-        }
-    }
-}
-
-// MARK: - Equatable
-
-extension __QueueLinked: Equatable where Element: Equatable {
+    /// A forward iterator over a snapshot of the elements, front (oldest) to back (newest).
+    ///
+    /// A linked queue has no contiguous span to vend a borrowing span-iterator over, so this
+    /// snapshots the live elements through the safe `forEach` node-walk and hands back a stdlib
+    /// iterator over that snapshot (a true snapshot — a later mutation of the source does not
+    /// disturb it). Holding the live column in a value-type iterator and reading it through the
+    /// seam's coroutine subscript miscompiles on Apple Swift 6.3.2 (SIGSEGV), so the snapshot path
+    /// is the sound one.
     @inlinable
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs._buffer == rhs._buffer
-    }
+    public func makeIterator() -> [Element].Iterator { _buffer.makeIterator() }
 }
-
-// MARK: - Hashable
-
-extension __QueueLinked: Hashable where Element: Hashable {
-    @inlinable
-    public func hash(into hasher: inout Hasher) {
-        _buffer.hash(into: &hasher)
-    }
-}
-
-// MARK: - Sendable
-
-extension __QueueLinked: @unchecked Sendable where Element: Sendable {}

@@ -21,50 +21,37 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/swift-primitives/swift-queue-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-buffer-linked-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-list-linked-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-index-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-iterator-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-sequence-primitives.git", branch: "main"),
-        // E2 (storage-small-substrate.md): verbose Storage.Contiguous<Memory.Heap> needs direct deps (MemberImportVisibility).
+        // Store.`Protocol` for the `__Queue` front-door nest alias (S.Element projection).
         .package(url: "https://github.com/swift-primitives/swift-storage-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-memory-heap-primitives.git", branch: "main"),
+        // The ring column backs `Queue<E>` (the namespace `Queue<E>.Linked` nests on); spelling
+        // the front door requires the ring's Store.`Protocol` conformance visible (exports-narrowing).
+        .package(url: "https://github.com/swift-primitives/swift-buffer-ring-primitives.git", branch: "main"),
     ],
     targets: [
 
-        // MARK: - Type module — lean ~Copyable Queue.Linked + nested variants/errors + iteration witnesses ([MOD-036])
+        // MARK: - Type module — lean ~Copyable Queue.Linked carrier + front door + error ([MOD-036])
         .target(
             name: "Queue Linked Primitive",
             dependencies: [
                 .product(name: "Queue Primitive", package: "swift-queue-primitives"),
                 .product(name: "Queue Primitives", package: "swift-queue-primitives"),
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
-                .product(name: "Buffer Linked Primitives", package: "swift-buffer-linked-primitives"),
-                .product(name: "List Linked Primitives", package: "swift-list-linked-primitives"),
                 .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Iterator Primitive", package: "swift-iterator-primitives"),
-                .product(name: "Iterator Protocol", package: "swift-iterator-primitives"),
-                .product(name: "Iterable", package: "swift-iterator-primitives"),
-                .product(name: "Iterator Chunk Primitives", package: "swift-iterator-primitives"),
-                .product(name: "Storage Contiguous Primitives", package: "swift-storage-primitives"),
                 .product(name: "Store Protocol Primitives", package: "swift-storage-primitives"),
-                .product(name: "Memory Heap Primitives", package: "swift-memory-heap-primitives"),
             ]
         ),
 
-        // MARK: - Ops module + umbrella — Copyable conformances + ops, re-exports the type module
+        // MARK: - Ops module + umbrella — operations over the linked-queue types, re-exports the type module
         .target(
             name: "Queue Linked Primitives",
             dependencies: [
                 "Queue Linked Primitive",
                 .product(name: "Queue Primitives", package: "swift-queue-primitives"),
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
-                .product(name: "Buffer Linked Primitives", package: "swift-buffer-linked-primitives"),
-                .product(name: "List Linked Primitives", package: "swift-list-linked-primitives"),
-                .product(name: "Iterator Primitive", package: "swift-iterator-primitives"),
-                .product(name: "Iterator Protocol", package: "swift-iterator-primitives"),
-                .product(name: "Iterable", package: "swift-iterator-primitives"),
-                .product(name: "Iterator Chunk Primitives", package: "swift-iterator-primitives"),
-                .product(name: "Sequence Primitives", package: "swift-sequence-primitives"),
+                .product(name: "Index Primitives", package: "swift-index-primitives"),
+                // The builder + convenience init spell the front door `Queue<E>.Linked` (ring-backed namespace).
+                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring-primitives"),
             ]
         ),
 
@@ -84,6 +71,8 @@ let package = Package(
             dependencies: [
                 "Queue Linked Primitives",
                 "Queue Linked Primitives Test Support",
+                // Tests spell the front door `Queue<E>.Linked` (ring-backed namespace).
+                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring-primitives"),
             ]
         )
     ],
