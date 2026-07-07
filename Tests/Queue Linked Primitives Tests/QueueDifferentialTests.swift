@@ -56,10 +56,12 @@ struct QueueLinkedDifferentialTests {
             case 0, 1, 2:  // enqueue bias (3/5 enqueue vs 1/5 dequeue) -> growth across reallocations
                 queue.enqueue(value)
                 oracle.append(value)
+
             case 3:
                 let got = queue.dequeue()
                 let want = oracle.isEmpty ? nil : oracle.removeFirst()
                 #expect(got == want, "step \(step): dequeue diverged")
+
             default:
                 let front = queue.peek()
                 #expect(front == oracle.first, "step \(step): peek diverged")

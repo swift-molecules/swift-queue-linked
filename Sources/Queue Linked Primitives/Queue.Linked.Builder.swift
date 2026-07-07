@@ -44,6 +44,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 
         // MARK: - Expression Building
 
+        /// Wraps a single element expression into a one-element queue.
         @inlinable
         public static func buildExpression(
             _ expression: consuming Element
@@ -53,6 +54,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
             return result
         }
 
+        /// Passes an already-built queue component through unchanged.
         @inlinable
         public static func buildExpression(
             _ expression: consuming Queue<Element>.Linked
@@ -60,6 +62,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
             consume expression
         }
 
+        /// Wraps an optional element expression, producing an empty queue when it is `nil`.
         @inlinable
         public static func buildExpression(
             _ expression: consuming Element?
@@ -73,6 +76,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 
         // MARK: - Partial Block Building
 
+        /// Begins a partial block with the first queue component, passed through unchanged.
         @inlinable
         public static func buildPartialBlock(
             first: consuming Queue<Element>.Linked
@@ -80,6 +84,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
             consume first
         }
 
+        /// Begins a partial block from an empty first statement, producing an empty queue.
         @inlinable
         public static func buildPartialBlock(
             first: Void
@@ -87,11 +92,13 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
             Queue<Element>.Linked()
         }
 
+        /// Begins a partial block whose first component is statically unreachable.
         @inlinable
         public static func buildPartialBlock(
             first: Never
         ) -> Queue<Element>.Linked {}
 
+        /// Merges an accumulated partial block with the next component, preserving FIFO order.
         @inlinable
         public static func buildPartialBlock(
             accumulated: consuming Queue<Element>.Linked,
@@ -107,6 +114,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 
         // MARK: - Block Building
 
+        /// Builds an empty queue for a block with no components.
         @inlinable
         public static func buildBlock() -> Queue<Element>.Linked {
             Queue<Element>.Linked()
@@ -114,6 +122,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 
         // MARK: - Control Flow
 
+        /// Builds from an optional `if`-branch component, producing an empty queue when untaken.
         @inlinable
         public static func buildOptional(
             _ component: consuming Queue<Element>.Linked?
@@ -124,6 +133,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
             return Queue<Element>.Linked()
         }
 
+        /// Builds the first branch of an `if`-`else` block.
         @inlinable
         public static func buildEither(
             first: consuming Queue<Element>.Linked
@@ -131,6 +141,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
             consume first
         }
 
+        /// Builds the second branch of an `if`-`else` block.
         @inlinable
         public static func buildEither(
             second: consuming Queue<Element>.Linked
@@ -140,6 +151,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 
         // buildArray omitted: see DocC above.
 
+        /// Passes a component through unchanged for an availability-gated (`if #available`) branch.
         @inlinable
         public static func buildLimitedAvailability(
             _ component: consuming Queue<Element>.Linked
@@ -166,6 +178,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 
 extension __QueueLinked.Builder where Element: Copyable, S: ~Copyable {
     /// Bulk-enqueue a `Swift.Sequence` without per-iteration allocation.
+    ///
     /// FIFO: iteration order = enqueue order.
     @inlinable
     public static func buildExpression<Seq: Swift.Sequence>(_ expression: Seq) -> Queue<Element>.Linked

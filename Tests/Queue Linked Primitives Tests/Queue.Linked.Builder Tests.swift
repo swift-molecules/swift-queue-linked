@@ -332,7 +332,11 @@ extension QueueLinkedBuilderTests.StaticMethods {
 
     @Test
     func `buildExpression existing queue`() {
-        let input: Queue<Int>.Linked = Queue<Int>.Linked { 1; 2; 3 }
+        let input: Queue<Int>.Linked = Queue<Int>.Linked {
+            1
+            2
+            3
+        }
         let result = Queue<Int>.Linked.Builder.buildExpression(input)
         #expect(QueueLinkedBuilderTests.collected(result) == [1, 2, 3])
     }
@@ -354,7 +358,11 @@ extension QueueLinkedBuilderTests.StaticMethods {
 
     @Test
     func `buildPartialBlock first`() {
-        let first: Queue<Int>.Linked = Queue<Int>.Linked { 1; 2; 3 }
+        let first: Queue<Int>.Linked = Queue<Int>.Linked {
+            1
+            2
+            3
+        }
         let result = Queue<Int>.Linked.Builder.buildPartialBlock(first: first)
         #expect(QueueLinkedBuilderTests.collected(result) == [1, 2, 3])
     }
@@ -368,8 +376,14 @@ extension QueueLinkedBuilderTests.StaticMethods {
 
     @Test
     func `buildPartialBlock accumulated and next preserves FIFO order`() {
-        let acc: Queue<Int>.Linked = Queue<Int>.Linked { 1; 2 }
-        let next: Queue<Int>.Linked = Queue<Int>.Linked { 3; 4 }
+        let acc: Queue<Int>.Linked = Queue<Int>.Linked {
+            1
+            2
+        }
+        let next: Queue<Int>.Linked = Queue<Int>.Linked {
+            3
+            4
+        }
         let result = Queue<Int>.Linked.Builder.buildPartialBlock(
             accumulated: acc,
             next: next
@@ -386,7 +400,10 @@ extension QueueLinkedBuilderTests.StaticMethods {
 
     @Test
     func `buildOptional some`() {
-        let component: Queue<Int>.Linked? = Queue<Int>.Linked { 1; 2 }
+        let component: Queue<Int>.Linked? = Queue<Int>.Linked {
+            1
+            2
+        }
         let result = Queue<Int>.Linked.Builder.buildOptional(component)
         #expect(QueueLinkedBuilderTests.collected(result) == [1, 2])
     }
@@ -401,21 +418,31 @@ extension QueueLinkedBuilderTests.StaticMethods {
 
     @Test
     func `buildEither first`() {
-        let first: Queue<Int>.Linked = Queue<Int>.Linked { 1; 2 }
+        let first: Queue<Int>.Linked = Queue<Int>.Linked {
+            1
+            2
+        }
         let result = Queue<Int>.Linked.Builder.buildEither(first: first)
         #expect(QueueLinkedBuilderTests.collected(result) == [1, 2])
     }
 
     @Test
     func `buildEither second`() {
-        let second: Queue<Int>.Linked = Queue<Int>.Linked { 3; 4 }
+        let second: Queue<Int>.Linked = Queue<Int>.Linked {
+            3
+            4
+        }
         let result = Queue<Int>.Linked.Builder.buildEither(second: second)
         #expect(QueueLinkedBuilderTests.collected(result) == [3, 4])
     }
 
     @Test
     func `buildLimitedAvailability passthrough`() {
-        let component: Queue<Int>.Linked = Queue<Int>.Linked { 1; 2; 3 }
+        let component: Queue<Int>.Linked = Queue<Int>.Linked {
+            1
+            2
+            3
+        }
         let result = Queue<Int>.Linked.Builder.buildLimitedAvailability(component)
         #expect(QueueLinkedBuilderTests.collected(result) == [1, 2, 3])
     }
