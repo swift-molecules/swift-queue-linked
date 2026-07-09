@@ -16,13 +16,13 @@ import Testing
 
 // MARK: - Test Suite Structure
 
-@Suite("Queue.Linked.Builder")
-struct QueueLinkedBuilderTests {
+@Suite
+struct `Queue.Linked.Builder` {
     @Suite struct Unit {}
-    @Suite struct EdgeCase {}
+    @Suite struct `Edge Case` {}
     @Suite struct Integration {}
-    @Suite struct NonCopyable {}
-    @Suite struct StaticMethods {}
+    @Suite struct `Non Copyable` {}
+    @Suite struct `Static Methods` {}
     @Suite struct FIFOSemantics {}
 }
 
@@ -35,7 +35,7 @@ private struct Move: ~Copyable {
 
 // MARK: - Iteration Helpers
 
-extension QueueLinkedBuilderTests {
+extension `Queue.Linked.Builder` {
     fileprivate static func collected(
         _ queue: consuming Queue<Int>.Linked
     ) -> [Int] {
@@ -61,7 +61,7 @@ extension QueueLinkedBuilderTests {
 
 // MARK: - FIFO Semantics
 
-extension QueueLinkedBuilderTests.FIFOSemantics {
+extension `Queue.Linked.Builder`.FIFOSemantics {
 
     @Test
     func `Declaration order = enqueue order = dequeue order`() {
@@ -79,12 +79,12 @@ extension QueueLinkedBuilderTests.FIFOSemantics {
 
 // MARK: - Unit Tests
 
-extension QueueLinkedBuilderTests.Unit {
+extension `Queue.Linked.Builder`.Unit {
 
     @Test
     func `Single element expression`() {
         let queue = Queue<Int>.Linked { 42 }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [42])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [42])
     }
 
     @Test
@@ -94,14 +94,14 @@ extension QueueLinkedBuilderTests.Unit {
             2
             3
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3])
     }
 
     @Test
     func `Optional element - some`() {
         let value: Int? = 42
         let queue = Queue<Int>.Linked { value }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [42])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [42])
     }
 
     @Test
@@ -122,7 +122,7 @@ extension QueueLinkedBuilderTests.Unit {
             none
             3
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3])
     }
 
     @Test
@@ -135,7 +135,7 @@ extension QueueLinkedBuilderTests.Unit {
 
 // MARK: - Control Flow
 
-extension QueueLinkedBuilderTests.Unit {
+extension `Queue.Linked.Builder`.Unit {
 
     @Test
     func `Conditional include`() {
@@ -147,7 +147,7 @@ extension QueueLinkedBuilderTests.Unit {
             }
             3
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3])
     }
 
     @Test
@@ -160,7 +160,7 @@ extension QueueLinkedBuilderTests.Unit {
             }
             3
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 3])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 3])
     }
 
     @Test
@@ -173,7 +173,7 @@ extension QueueLinkedBuilderTests.Unit {
                 2
             }
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1])
     }
 
     @Test
@@ -186,13 +186,13 @@ extension QueueLinkedBuilderTests.Unit {
                 2
             }
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [2])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [2])
     }
 }
 
 // MARK: - Edge Cases
 
-extension QueueLinkedBuilderTests.EdgeCase {
+extension `Queue.Linked.Builder`.`Edge Case` {
 
     @Test
     func `Deeply nested conditionals`() {
@@ -214,7 +214,7 @@ extension QueueLinkedBuilderTests.EdgeCase {
             }
             99
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [0, 1, 3, 4, 99])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [0, 1, 3, 4, 99])
     }
 
     @Test
@@ -231,13 +231,13 @@ extension QueueLinkedBuilderTests.EdgeCase {
             9
             10
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == Swift.Array(1...10))
+        #expect(`Queue.Linked.Builder`.collected(queue) == Swift.Array(1...10))
     }
 }
 
 // MARK: - Integration
 
-extension QueueLinkedBuilderTests.Integration {
+extension `Queue.Linked.Builder`.Integration {
 
     @Test
     func `Builder result accepts further enqueues`() {
@@ -247,20 +247,20 @@ extension QueueLinkedBuilderTests.Integration {
         }
         queue.enqueue(3)
         queue.enqueue(4)
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 2, 3, 4])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3, 4])
     }
 }
 
 // MARK: - NonCopyable
 
-extension QueueLinkedBuilderTests.NonCopyable {
+extension `Queue.Linked.Builder`.`Non Copyable` {
 
     @Test
     func `Builder with single noncopyable element`() {
         let queue = Queue<Move>.Linked {
             Move(42)
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [42])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [42])
     }
 
     @Test
@@ -270,7 +270,7 @@ extension QueueLinkedBuilderTests.NonCopyable {
             Move(2)
             Move(3)
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3])
     }
 
     @Test
@@ -283,7 +283,7 @@ extension QueueLinkedBuilderTests.NonCopyable {
             }
             Move(3)
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3])
     }
 
     @Test
@@ -296,7 +296,7 @@ extension QueueLinkedBuilderTests.NonCopyable {
             }
             Move(3)
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [1, 3])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [1, 3])
     }
 
     @Test
@@ -309,7 +309,7 @@ extension QueueLinkedBuilderTests.NonCopyable {
                 Move(20)
             }
         }
-        #expect(QueueLinkedBuilderTests.collected(queue) == [10])
+        #expect(`Queue.Linked.Builder`.collected(queue) == [10])
     }
 
     @Test
@@ -322,12 +322,12 @@ extension QueueLinkedBuilderTests.NonCopyable {
 
 // MARK: - Static Method Tests
 
-extension QueueLinkedBuilderTests.StaticMethods {
+extension `Queue.Linked.Builder`.`Static Methods` {
 
     @Test
     func `buildExpression single element`() {
         let result = Queue<Int>.Linked.Builder.buildExpression(42)
-        #expect(QueueLinkedBuilderTests.collected(result) == [42])
+        #expect(`Queue.Linked.Builder`.collected(result) == [42])
     }
 
     @Test
@@ -338,14 +338,14 @@ extension QueueLinkedBuilderTests.StaticMethods {
             3
         }
         let result = Queue<Int>.Linked.Builder.buildExpression(input)
-        #expect(QueueLinkedBuilderTests.collected(result) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(result) == [1, 2, 3])
     }
 
     @Test
     func `buildExpression optional - some`() {
         let value: Int? = 42
         let result = Queue<Int>.Linked.Builder.buildExpression(value)
-        #expect(QueueLinkedBuilderTests.collected(result) == [42])
+        #expect(`Queue.Linked.Builder`.collected(result) == [42])
     }
 
     @Test
@@ -364,7 +364,7 @@ extension QueueLinkedBuilderTests.StaticMethods {
             3
         }
         let result = Queue<Int>.Linked.Builder.buildPartialBlock(first: first)
-        #expect(QueueLinkedBuilderTests.collected(result) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(result) == [1, 2, 3])
     }
 
     @Test
@@ -388,7 +388,7 @@ extension QueueLinkedBuilderTests.StaticMethods {
             accumulated: acc,
             next: next
         )
-        #expect(QueueLinkedBuilderTests.collected(result) == [1, 2, 3, 4])
+        #expect(`Queue.Linked.Builder`.collected(result) == [1, 2, 3, 4])
     }
 
     @Test
@@ -405,7 +405,7 @@ extension QueueLinkedBuilderTests.StaticMethods {
             2
         }
         let result = Queue<Int>.Linked.Builder.buildOptional(component)
-        #expect(QueueLinkedBuilderTests.collected(result) == [1, 2])
+        #expect(`Queue.Linked.Builder`.collected(result) == [1, 2])
     }
 
     @Test
@@ -423,7 +423,7 @@ extension QueueLinkedBuilderTests.StaticMethods {
             2
         }
         let result = Queue<Int>.Linked.Builder.buildEither(first: first)
-        #expect(QueueLinkedBuilderTests.collected(result) == [1, 2])
+        #expect(`Queue.Linked.Builder`.collected(result) == [1, 2])
     }
 
     @Test
@@ -433,7 +433,7 @@ extension QueueLinkedBuilderTests.StaticMethods {
             4
         }
         let result = Queue<Int>.Linked.Builder.buildEither(second: second)
-        #expect(QueueLinkedBuilderTests.collected(result) == [3, 4])
+        #expect(`Queue.Linked.Builder`.collected(result) == [3, 4])
     }
 
     @Test
@@ -444,6 +444,6 @@ extension QueueLinkedBuilderTests.StaticMethods {
             3
         }
         let result = Queue<Int>.Linked.Builder.buildLimitedAvailability(component)
-        #expect(QueueLinkedBuilderTests.collected(result) == [1, 2, 3])
+        #expect(`Queue.Linked.Builder`.collected(result) == [1, 2, 3])
     }
 }

@@ -20,6 +20,9 @@ import Testing
 private struct SplitMix64 {
     var state: UInt64
     init(seed: UInt64) { self.state = seed }
+}
+
+extension SplitMix64 {
     mutating func next() -> UInt64 {
         state &+= 0x9E37_79B9_7F4A_7C15
         var z = state
@@ -36,8 +39,8 @@ private struct SplitMix64 {
 // stable-order "-style" law is FIFO-order preservation across growth/reallocations — which this
 // differential test asserts step-by-step against the oracle. It IS the [DS-024]-style law test.
 
-@Suite("Queue.Linked — differential vs array oracle")
-struct QueueLinkedDifferentialTests {
+@Suite
+struct `Queue.Linked — differential vs array oracle` {
 
     /// ≥500 mixed ops against a plain-`[Int]` oracle over the move-only default column
     /// (`Queue<Int>.Linked`): duplicates (values drawn from 0..<10), interleaved
