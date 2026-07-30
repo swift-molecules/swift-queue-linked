@@ -2,7 +2,7 @@
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
-The **linked-queue FIFO discipline** over the `Queue` namespace: arena-backed, linked-list storage with O(1) enqueue and dequeue, in four capacity flavours — growable, fixed, inline, and small-buffer-optimized — all supporting noncopyable (`~Copyable`) elements.
+The **linked-queue FIFO discipline** over the `Queue` namespace: arena-backed, linked-list storage with O(1) enqueue and dequeue, growable and supporting noncopyable (`~Copyable`) elements.
 
 ---
 
@@ -37,11 +37,12 @@ while let handle = handles.dequeue() {
     _ = consume handle
 }
 
-// Fixed-capacity variant — capacity is enforced at enqueue time.
-var bounded = try Queue<Int>.Linked.Fixed(capacity: 8) {
-    1; 2; 3
-}
-let front = bounded.dequeue()  // Optional(1)
+// Reserve capacity up front to avoid incremental growth.
+var reserved = Queue<Int>.Linked(reservingCapacity: 8)
+reserved.enqueue(1)
+reserved.enqueue(2)
+reserved.enqueue(3)
+let front = reserved.dequeue()  // Optional(1)
 ```
 
 ---
@@ -71,20 +72,17 @@ and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the matching Linu
 
 ## Variants
 
-| Type                        | Storage              | Reach for it when                                               |
-|-----------------------------|----------------------|-----------------------------------------------------------------|
-| `Queue<E>.Linked`           | heap, growable       | the queue size is unbounded or not known up front               |
-| `Queue<E>.Linked.Fixed`     | heap, fixed capacity | there is a hard capacity ceiling; enqueue throws on overflow    |
-| `Queue<E>.Linked.Inline<n>` | inline, fixed        | capacity is small and known at compile time; no heap allocation |
-| `Queue<E>.Linked.Small<n>`  | inline → heap        | usually small, occasionally larger (small-buffer optimization)  |
+| Type              | Storage        | Reach for it when                                  |
+|-------------------|----------------|-----------------------------------------------------|
+| `Queue<E>.Linked` | heap, growable | the queue size is unbounded or not known up front   |
 
-Every variant is generic over `Element`. `Queue.Linked` and `Queue.Linked.Fixed` support noncopyable (`~Copyable`) element types. `Queue.Linked.Inline` and `Queue.Linked.Small` require `Element: Copyable` due to current `InlineArray` constraints.
+`Queue<E>.Linked` is generic over `Element` and supports noncopyable (`~Copyable`) element types. Use `init(reservingCapacity:)` to pre-size the backing storage when an approximate upper bound is known ahead of time.
 
 ---
 
 ## Architecture
 
-Each variant ships as two modules: a lean type module (`Queue Linked Primitive`) containing the value types and their storage operations, and a conformances module (`Queue Linked Primitives`) containing `Sequence`, `Collection`, and protocol conformances — kept separate so they never constrain noncopyable use. Importing `Queue Linked Primitives` (the umbrella) brings in the whole package; importing `Queue Linked Primitive` brings in the types alone, without the Copyable-requiring conformances.
+`Queue<E>.Linked` ships as two modules: a lean type module (`Queue Linked Primitive`) containing the value type and its storage operations, and a conformances module (`Queue Linked Primitives`) containing `Sequence`, `Collection`, and protocol conformances — kept separate so they never constrain noncopyable use. Importing `Queue Linked Primitives` (the umbrella) brings in the whole package; importing `Queue Linked Primitive` brings in the type alone, without the Copyable-requiring conformances.
 
 ---
 

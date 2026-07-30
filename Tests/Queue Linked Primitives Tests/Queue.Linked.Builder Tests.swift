@@ -249,6 +249,19 @@ extension `Queue.Linked.Builder`.Integration {
         queue.enqueue(4)
         #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3, 4])
     }
+
+    /// Drift guard for README.md's Quick Start "Reserve capacity up front" example: mirrors it
+    /// verbatim so the example fails to compile or fails this assertion if the shipped API
+    /// (`init(reservingCapacity:)`, `enqueue`, `dequeue`) drifts away from what the README shows.
+    @Test
+    func `README reserve-capacity example matches shipped API`() {
+        var reserved = Queue<Int>.Linked(reservingCapacity: 8)
+        reserved.enqueue(1)
+        reserved.enqueue(2)
+        reserved.enqueue(3)
+        let front = reserved.dequeue()
+        #expect(front == 1)
+    }
 }
 
 // MARK: - NonCopyable
