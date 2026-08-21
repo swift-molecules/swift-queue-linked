@@ -1,20 +1,7 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 import Buffer_Ring_Primitive
 import Testing
 
 @testable import Queue_Linked_Primitives
-
-// MARK: - Test Suite Structure
 
 @Suite
 struct `Queue.Linked.Builder` {
@@ -26,14 +13,10 @@ struct `Queue.Linked.Builder` {
     @Suite struct FIFOSemantics {}
 }
 
-// MARK: - Move-Only Test Fixture
-
 private struct Move: ~Copyable {
     let value: Int
     init(_ value: Int) { self.value = value }
 }
-
-// MARK: - Iteration Helpers
 
 extension `Queue.Linked.Builder` {
     fileprivate static func collected(
@@ -59,8 +42,6 @@ extension `Queue.Linked.Builder` {
     }
 }
 
-// MARK: - FIFO Semantics
-
 extension `Queue.Linked.Builder`.FIFOSemantics {
 
     @Test
@@ -76,8 +57,6 @@ extension `Queue.Linked.Builder`.FIFOSemantics {
         #expect(queue.dequeue() == nil)
     }
 }
-
-// MARK: - Unit Tests
 
 extension `Queue.Linked.Builder`.Unit {
 
@@ -132,8 +111,6 @@ extension `Queue.Linked.Builder`.Unit {
         #expect(isEmpty)
     }
 }
-
-// MARK: - Control Flow
 
 extension `Queue.Linked.Builder`.Unit {
 
@@ -190,8 +167,6 @@ extension `Queue.Linked.Builder`.Unit {
     }
 }
 
-// MARK: - Edge Cases
-
 extension `Queue.Linked.Builder`.`Edge Case` {
 
     @Test
@@ -235,8 +210,6 @@ extension `Queue.Linked.Builder`.`Edge Case` {
     }
 }
 
-// MARK: - Integration
-
 extension `Queue.Linked.Builder`.Integration {
 
     @Test
@@ -250,9 +223,6 @@ extension `Queue.Linked.Builder`.Integration {
         #expect(`Queue.Linked.Builder`.collected(queue) == [1, 2, 3, 4])
     }
 
-    /// Drift guard for README.md's Quick Start "Reserve capacity up front" example: mirrors it
-    /// verbatim so the example fails to compile or fails this assertion if the shipped API
-    /// (`init(reservingCapacity:)`, `enqueue`, `dequeue`) drifts away from what the README shows.
     @Test
     func `README reserve-capacity example matches shipped API`() {
         var reserved = Queue<Int>.Linked(reservingCapacity: 8)
@@ -263,8 +233,6 @@ extension `Queue.Linked.Builder`.Integration {
         #expect(front == 1)
     }
 }
-
-// MARK: - NonCopyable
 
 extension `Queue.Linked.Builder`.`Non Copyable` {
 
@@ -332,8 +300,6 @@ extension `Queue.Linked.Builder`.`Non Copyable` {
         #expect(isEmpty)
     }
 }
-
-// MARK: - Static Method Tests
 
 extension `Queue.Linked.Builder`.`Static Methods` {
 

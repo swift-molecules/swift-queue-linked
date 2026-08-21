@@ -1,21 +1,8 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 import Buffer_Ring_Primitive
 import Index_Primitives
 import Testing
 
 @testable import Queue_Linked_Primitives
-
-// MARK: - Deterministic RNG (SplitMix64 — no seeding nondeterminism in CI)
 
 private struct SplitMix64 {
     var state: UInt64
@@ -32,20 +19,9 @@ extension SplitMix64 {
     }
 }
 
-// MARK: - Differential vs a plain-array oracle (the W2 test floor, §9.3 convention rider)
-//
-// [DS-024] note: the generational-seam column is OUTSIDE the Store-tier Seam.Ledger (ruled), so
-// there is no Seam.Ledger violations fixture here. A queue has no middle-removal, so the
-// stable-order "-style" law is FIFO-order preservation across growth/reallocations — which this
-// differential test asserts step-by-step against the oracle. It IS the [DS-024]-style law test.
-
 @Suite
 struct `Queue.Linked — differential vs array oracle` {
 
-    /// ≥500 mixed ops against a plain-`[Int]` oracle over the move-only default column
-    /// (`Queue<Int>.Linked`): duplicates (values drawn from 0..<10), interleaved
-    /// enqueue/dequeue/peek, growth across reallocations (initial node capacity is 4; the enqueue
-    /// bias grows the queue well past it), step-by-step match, plus a final full-order check.
     @Test
     func `600 mixed ops match a plain-array oracle (move-only column)`() {
         var rng = SplitMix64(seed: 0x5EED_1157_ADC0_FFEE)
@@ -54,9 +30,9 @@ struct `Queue.Linked — differential vs array oracle` {
 
         for step in 0..<600 {
             let op = rng.next() % 5
-            let value = Int(rng.next() % 10)  // small range -> duplicates guaranteed
+            let value = Int(rng.next() % 10)
             switch op {
-            case 0, 1, 2:  // enqueue bias (3/5 enqueue vs 1/5 dequeue) -> growth across reallocations
+            case 0, 1, 2:
                 queue.enqueue(value)
                 oracle.append(value)
 
@@ -70,24 +46,20 @@ struct `Queue.Linked — differential vs array oracle` {
                 #expect(front == oracle.first, "step \(step): peek diverged")
             }
 
-            // Step-by-step invariants (bound to locals -- move-only #expect capture discipline).
             let count = queue.count
             #expect(count == Index<Int>.Count(UInt(oracle.count)), "step \(step): count diverged")
             let empty = queue.isEmpty
             #expect(empty == oracle.isEmpty, "step \(step): isEmpty diverged")
         }
 
-        // Final full-order check, front (oldest) to back (newest).
         var snapshot: [Int] = []
         queue.forEach { (element: borrowing Int) in snapshot.append(copy element) }
         #expect(snapshot == oracle)
 
-        // Snapshot iterator agrees with the forEach walk.
         let iterated = Array(AnyIterator(queue.makeIterator()))
         #expect(iterated == oracle)
     }
 
-    /// A move-only element fixture drained FIFO matches the enqueue order (the ~Copyable path).
     @Test
     func `move-only elements drain in FIFO order`() {
         struct Token: ~Copyable { let value: Int }
