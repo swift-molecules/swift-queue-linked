@@ -1,4 +1,4 @@
-# Queue Linked Primitives
+# Queue Linked
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -9,7 +9,7 @@ The **linked-queue FIFO discipline** over the `Queue` namespace: arena-backed, l
 ## Quick Start
 
 ```swift
-import Queue_Linked_Primitives
+import Queue_Linked
 
 // Growable linked queue — enqueue events, drain in arrival order.
 var events = Queue<String>.Linked {
@@ -51,7 +51,7 @@ let front = reserved.dequeue()  // Optional(1)
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-queue-linked-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-queue-linked.git", branch: "main")
 ]
 ```
 
@@ -60,7 +60,7 @@ dependencies: [
     name: "App",
     dependencies: [
         // The umbrella — the whole package.
-        .product(name: "Queue Linked Primitives", package: "swift-queue-linked-primitives"),
+        .product(name: "Queue Linked", package: "swift-queue-linked"),
     ]
 )
 ```
@@ -82,7 +82,7 @@ and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the matching Linu
 
 ## Architecture
 
-`Queue<E>.Linked` ships as two modules: a lean type module (`Queue Linked Primitive`) containing the value type and its storage operations, and a conformances module (`Queue Linked Primitives`) containing `Sequence`, `Collection`, and protocol conformances — kept separate so they never constrain noncopyable use. Importing `Queue Linked Primitives` (the umbrella) brings in the whole package; importing `Queue Linked Primitive` brings in the type alone, without the Copyable-requiring conformances.
+`Queue<E>.Linked` ships as two modules: a lean type module (`Queue Linked Primitive`) containing the value type and its storage operations, and a conformances module (`Queue Linked`) containing `Sequence`, `Collection`, and protocol conformances — kept separate so they never constrain noncopyable use. Importing `Queue Linked` (the umbrella) brings in the whole package; importing `Queue Linked Primitive` brings in the type alone, without the Copyable-requiring conformances.
 
 ---
 

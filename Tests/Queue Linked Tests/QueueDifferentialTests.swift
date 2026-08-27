@@ -1,8 +1,8 @@
 import Buffer_Ring_Primitive
-import Index_Primitives
+import Index
 import Testing
 
-@testable import Queue_Linked_Primitives
+@testable import Queue_Linked
 
 private struct SplitMix64 {
     var state: UInt64

@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-queue-linked-primitives",
+    name: "swift-queue-linked",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -15,59 +15,59 @@ let package = Package(
 
         .library(name: "Queue Linked Primitive", targets: ["Queue Linked Primitive"]),
 
-        .library(name: "Queue Linked Primitives", targets: ["Queue Linked Primitives"]),
-        .library(name: "Queue Linked Primitives Test Support", targets: ["Queue Linked Primitives Test Support"]),
+        .library(name: "Queue Linked", targets: ["Queue Linked"]),
+        .library(name: "Queue Linked Test Support", targets: ["Queue Linked Test Support"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-primitives/swift-queue-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-buffer-linked-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-index-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-queue.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-buffer-linked.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-index.git", branch: "main"),
 
-        .package(url: "https://github.com/swift-primitives/swift-storage-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-storage.git", branch: "main"),
 
-        .package(url: "https://github.com/swift-primitives/swift-buffer-ring-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-buffer-ring.git", branch: "main"),
     ],
     targets: [
 
         .target(
             name: "Queue Linked Primitive",
             dependencies: [
-                .product(name: "Queue Primitive", package: "swift-queue-primitives"),
-                .product(name: "Queue Primitives", package: "swift-queue-primitives"),
-                .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Store Protocol Primitives", package: "swift-storage-primitives"),
+                .product(name: "Queue Primitive", package: "swift-queue"),
+                .product(name: "Queue", package: "swift-queue"),
+                .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked"),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Store Protocol", package: "swift-storage"),
             ]
         ),
 
         .target(
-            name: "Queue Linked Primitives",
+            name: "Queue Linked",
             dependencies: [
                 "Queue Linked Primitive",
-                .product(name: "Queue Primitives", package: "swift-queue-primitives"),
-                .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
+                .product(name: "Queue", package: "swift-queue"),
+                .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked"),
+                .product(name: "Index", package: "swift-index"),
 
-                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring-primitives"),
+                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring"),
             ]
         ),
 
         .target(
-            name: "Queue Linked Primitives Test Support",
+            name: "Queue Linked Test Support",
             dependencies: [
-                "Queue Linked Primitives",
-                .product(name: "Index Primitives Test Support", package: "swift-index-primitives"),
+                "Queue Linked",
+                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),
 
         .testTarget(
-            name: "Queue Linked Primitives Tests",
+            name: "Queue Linked Tests",
             dependencies: [
-                "Queue Linked Primitives",
-                "Queue Linked Primitives Test Support",
+                "Queue Linked",
+                "Queue Linked Test Support",
 
-                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring-primitives"),
+                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring"),
             ]
         )
     ],

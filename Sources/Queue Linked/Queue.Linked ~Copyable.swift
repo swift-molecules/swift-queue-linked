@@ -1,5 +1,5 @@
 public import Buffer_Linked_Primitive
-public import Index_Primitives
+public import Index
 public import Queue_Linked_Primitive
 
 extension __QueueLinked
@@ -9,16 +9,16 @@ where
 {
 
     @inlinable
-    public var count: Index_Primitives.Index<Element>.Count {
-        Index_Primitives.Index<Element>.Count(UInt(_buffer.count))
+    public var count: Index.Index<Element>.Count {
+        Index.Index<Element>.Count(UInt(_buffer.count))
     }
 
     @inlinable
     public var isEmpty: Bool { _buffer.isEmpty }
 
     @inlinable
-    public var capacity: Index_Primitives.Index<Element>.Count {
-        Index_Primitives.Index<Element>.Count(UInt(_buffer.capacity))
+    public var capacity: Index.Index<Element>.Count {
+        Index.Index<Element>.Count(UInt(_buffer.capacity))
     }
 }
 

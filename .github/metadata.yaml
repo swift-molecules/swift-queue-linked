@@ -1,7 +1,7 @@
 # .github/metadata.yaml
 description: "Linked-queue types for Swift."
 topics:
-  - primitives
+  - molecules
   - queue
 homepage: "https://swift-institute.org"
 readme:

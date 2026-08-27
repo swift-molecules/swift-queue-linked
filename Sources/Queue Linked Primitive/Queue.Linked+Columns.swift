@@ -1,5 +1,5 @@
 public import Buffer_Linked_Primitive
-public import Index_Primitives
+public import Index
 
 extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 
@@ -8,7 +8,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
     where S == Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Node<Element, 1>> {
         self.init(
             _buffer: Buffer<S>.Linked<1>(
-                minimumCapacity: Index_Primitives.Index<Element>.Count(UInt(4))
+                minimumCapacity: Index.Index<Element>.Count(UInt(4))
             )
         )
     }
@@ -19,7 +19,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
         precondition(capacity > 0, "capacity must be positive")
         self.init(
             _buffer: Buffer<S>.Linked<1>(
-                minimumCapacity: Index_Primitives.Index<Element>.Count(UInt(capacity))
+                minimumCapacity: Index.Index<Element>.Count(UInt(capacity))
             )
         )
     }

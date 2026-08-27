@@ -1,7 +1,7 @@
 import Buffer_Ring_Primitive
 import Testing
 
-@testable import Queue_Linked_Primitives
+@testable import Queue_Linked
 
 @Suite
 struct `Queue.Linked.Builder` {
