@@ -1,6 +1,6 @@
 public import Buffer_Linked_Primitive
 public import Queue_Primitive
-public import Store_Protocol
+public import Store
 
 extension __Queue where S: Store.`Protocol` & ~Copyable {
 
