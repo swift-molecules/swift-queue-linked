@@ -21,7 +21,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/swift-molecules/swift-queue.git", branch: "main"),
         .package(url: "https://github.com/swift-molecules/swift-buffer-linked.git", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-index.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-index.git", branch: "main"),
 
         .package(url: "https://github.com/swift-molecules/swift-storage.git", branch: "main"),
 
