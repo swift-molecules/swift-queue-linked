@@ -19,11 +19,11 @@ let package = Package(
         .library(name: "Queue Linked Test Support", targets: ["Queue Linked Test Support"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-molecules/swift-queue.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-queue.git", branch: "main"),
         .package(url: "https://github.com/swift-molecules/swift-buffer-linked.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-index.git", branch: "main"),
 
-        .package(url: "https://github.com/swift-molecules/swift-storage.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-store.git", branch: "main"),
 
         .package(url: "https://github.com/swift-molecules/swift-buffer-ring.git", branch: "main"),
     ],
@@ -36,7 +36,7 @@ let package = Package(
                 .product(name: "Queue", package: "swift-queue"),
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked"),
                 .product(name: "Index", package: "swift-index"),
-                .product(name: "Store Protocol", package: "swift-storage"),
+                .product(name: "Store", package: "swift-store"),
             ]
         ),
 
