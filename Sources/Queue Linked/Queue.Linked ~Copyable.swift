@@ -9,16 +9,16 @@ where
 {
 
     @inlinable
-    public var count: Index.Index<Element>.Count {
-        Index.Index<Element>.Count(UInt(_buffer.count))
+    public var count: Index::Index<Element>.Count {
+        Index::Index<Element>.Count(UInt(_buffer.count))
     }
 
     @inlinable
     public var isEmpty: Bool { _buffer.isEmpty }
 
     @inlinable
-    public var capacity: Index.Index<Element>.Count {
-        Index.Index<Element>.Count(UInt(_buffer.capacity))
+    public var capacity: Index::Index<Element>.Count {
+        Index::Index<Element>.Count(UInt(_buffer.capacity))
     }
 }
 
