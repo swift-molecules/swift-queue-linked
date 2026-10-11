@@ -43,7 +43,7 @@ let package = Package(
         .target(
             name: "Queue Linked",
             dependencies: [
-                "Queue Linked Primitive",
+                .target(name: "Queue Linked Primitive"),
                 .product(name: "Queue", package: "swift-queue"),
                 .product(name: "Buffer Linked Primitive", package: "swift-buffer-linked"),
                 .product(name: "Index", package: "swift-index"),
@@ -55,7 +55,7 @@ let package = Package(
         .target(
             name: "Queue Linked Test Support",
             dependencies: [
-                "Queue Linked",
+                .target(name: "Queue Linked"),
                 .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
@@ -64,8 +64,8 @@ let package = Package(
         .testTarget(
             name: "Queue Linked Tests",
             dependencies: [
-                "Queue Linked",
-                "Queue Linked Test Support",
+                .target(name: "Queue Linked"),
+                .target(name: "Queue Linked Test Support"),
 
                 .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring"),
             ]
@@ -75,17 +75,14 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+    target.swiftSettings = (target.swiftSettings ?? []) + [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("Lifetimes"),
+        .treatAllWarnings(as: .error),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

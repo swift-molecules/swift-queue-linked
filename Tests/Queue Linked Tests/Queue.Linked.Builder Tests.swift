@@ -206,7 +206,7 @@ extension `Queue.Linked.Builder`.`Edge Case` {
             9
             10
         }
-        #expect(`Queue.Linked.Builder`.collected(queue) == Swift.Array(1...10))
+        #expect(`Queue.Linked.Builder`.collected(queue) == Swift::Array(1...10))
     }
 }
 

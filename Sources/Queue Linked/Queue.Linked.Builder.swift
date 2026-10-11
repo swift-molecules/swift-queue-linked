@@ -116,7 +116,7 @@ extension __QueueLinked where Element: ~Copyable, S: ~Copyable {
 extension __QueueLinked.Builder where Element: Copyable, S: ~Copyable {
 
     @inlinable
-    public static func buildExpression<Seq: Swift.Sequence>(
+    public static func buildExpression<Seq: Swift::Sequence>(
         _ expression: Seq
     ) -> Queue<Element>.Linked
     where Seq.Element == Element {
