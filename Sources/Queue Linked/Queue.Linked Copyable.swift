@@ -3,7 +3,10 @@ public import Queue_Linked_Primitive
 
 extension __QueueLinked
 where
-    Element: Copyable, S: ~Copyable, S: Store.Generational.`Protocol`, S.Element == Node<Element, 1>
+    Element: Copyable,
+    S: ~Copyable,
+    S: Store.Generational.`Protocol`,
+    S.Element == Node<Element, 1>
 {
 
     @inlinable

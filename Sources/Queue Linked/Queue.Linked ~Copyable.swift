@@ -4,7 +4,9 @@ public import Queue_Linked_Primitive
 
 extension __QueueLinked
 where
-    Element: ~Copyable, S: ~Copyable, S: Store.Generational.`Protocol`,
+    Element: ~Copyable,
+    S: ~Copyable,
+    S: Store.Generational.`Protocol`,
     S.Element == Node<Element, 1>
 {
 
@@ -24,7 +26,9 @@ where
 
 extension __QueueLinked
 where
-    Element: ~Copyable, S: ~Copyable, S: Store.Generational.`Protocol`,
+    Element: ~Copyable,
+    S: ~Copyable,
+    S: Store.Generational.`Protocol`,
     S.Element == Node<Element, 1>
 {
 
@@ -48,7 +52,9 @@ where
 
 extension __QueueLinked
 where
-    Element: ~Copyable, S: ~Copyable, S: Store.Generational.`Protocol`,
+    Element: ~Copyable,
+    S: ~Copyable,
+    S: Store.Generational.`Protocol`,
     S.Element == Node<Element, 1>
 {
 
@@ -62,7 +68,9 @@ where
 
 extension __QueueLinked
 where
-    Element: ~Copyable, S: ~Copyable, S: Store.Generational.`Protocol`,
+    Element: ~Copyable,
+    S: ~Copyable,
+    S: Store.Generational.`Protocol`,
     S.Element == Node<Element, 1>
 {
 
